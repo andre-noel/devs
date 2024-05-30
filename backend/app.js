@@ -1,9 +1,11 @@
 const express = require('express');
 require('dotenv').config();
 const connection = require('./connection');
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const calcAge = (dateString) => {
     if (!dateString) return null;
@@ -18,15 +20,31 @@ const calcAge = (dateString) => {
 }
 
 app.get('/api/niveis', async (req, res) => {
+    const returnData = {
+        data : [],
+        total: 0,
+        per_page: 5,
+        current_page: 1,
+        last_page: 1,
+    };
     try {
+        const page = req.query.page ?? 1;
         const [ results ] = await connection.promise().query(
-            'SELECT * FROM `nivel`'
+            'SELECT * FROM `nivel` limit 5 offset ?', [(page - 1) * 5]
         );
         if (!results.length) {
             res.status(404).json({ message: 'Nenhum nível encontrado' });
             return;
         }
-        res.status(200).json(results); // results contains rows returned by server
+        const [ countLevels ] = await connection.promise().query(
+            'SELECT count(*) as total FROM `nivel`'
+        );
+        returnData.total = countLevels[0]['total'];
+        returnData.per_page = 5;
+        returnData.current_page = Number(page);
+        returnData.last_page = Math.ceil(returnData.total / returnData.per_page);
+        returnData.data = results;
+        res.status(200).json(returnData); // results contains rows returned by server
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -48,6 +66,7 @@ app.get('/api/niveis/:id', async (req, res) => {
 
 app.post('/api/niveis', async (req, res) => {
     const { nivel } = req.body;
+    console.log(req);
     if (!nivel) {
         res.status(400).json({ message: 'Nível é obrigatório' });
         return;
@@ -133,6 +152,13 @@ app.delete('/api/niveis/:id', async (req, res) => {
         );
         if (!results.length) {
             res.status(404).json({ message: 'Nível não encontrado' });
+            return;
+        }
+        const [ checkFK ] = await connection.promise().query(
+            'SELECT count(*) as qtd FROM `dev` where nivel_id = ?', [id]
+        );
+        if (checkFK[0]['qtd'] > 0) {
+            res.status(400).json({ message: 'Não é possível excluir níveis com desenvolvedores associados' });
             return;
         }
         await connection.promise().query(

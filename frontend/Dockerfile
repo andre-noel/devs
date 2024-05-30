@@ -1,5 +1,5 @@
 # Usa a imagem oficial do Node.js como base
-FROM node:14
+FROM node:20 AS build
 
 # Cria e define o diretório de trabalho
 WORKDIR /usr/src/app
@@ -20,7 +20,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copia os arquivos compilados para o diretório padrão do nginx
-COPY --from=0 /usr/src/app/build /usr/share/nginx/html
+COPY --from=build /usr/src/app/build /usr/share/nginx/html
 
 # Expõe a porta que o nginx irá rodar
 EXPOSE 80

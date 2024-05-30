@@ -1,5 +1,5 @@
 # Usa a imagem oficial do Node.js como base
-FROM node:14
+FROM node:20
 
 # Cria e define o diretório de trabalho
 WORKDIR /usr/src/app
@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Define o comando para rodar a aplicação
-CMD ["node", "index.js"]
+CMD ["node", "server.js"]
