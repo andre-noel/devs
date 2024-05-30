@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FormField, Button, Form, Message } from 'semantic-ui-react';
 import axios from 'axios';
 
-const FormLevel = () => {
+const LevelCreate = () => {
   const [nivel, setNivel] = useState('');
   const [message, setMessage] = useState('');
   const postData = (event) => {
@@ -30,4 +30,4 @@ const FormLevel = () => {
   </>
 )};
 
-export default FormLevel
+export default LevelCreate

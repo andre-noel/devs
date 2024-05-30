@@ -259,30 +259,30 @@ Está separado por níveis, onde o nível 1 é o mínimo que esperamos que você
 
 |     | Descrição                  | Local |
 | --- | -------------------------- | ----- |
-| [ ] | Listar niveis              | 🚀🎨  |
-| [ ] | Cadastrar um nível         | 🚀🎨  |
-| [ ] | Editar um nível            | 🚀🎨  |
-| [ ] | Remover um nível           | 🚀🎨  |
-| [ ] | Listar desenvolvedores     | 🚀🎨  |
-| [ ] | Cadastrar um desenvolvedor | 🚀🎨  |
-| [ ] | Editar um desenvolvedor    | 🚀🎨  |
-| [ ] | Remover um desenvolvedor   | 🚀🎨  |
+| [x] | Listar niveis              | 🚀🎨  |
+| [x] | Cadastrar um nível         | 🚀🎨  |
+| [x] | Editar um nível            | 🚀🎨  |
+| [x] | Remover um nível           | 🚀🎨  |
+| [x] | Listar desenvolvedores     | 🚀🎨  |
+| [x] | Cadastrar um desenvolvedor | 🚀🎨  |
+| [x] | Editar um desenvolvedor    | 🚀🎨  |
+| [x] | Remover um desenvolvedor   | 🚀🎨  |
 
 ### Nível 2
 
 |     | Descrição                                                              | Local |
 | --- | ---------------------------------------------------------------------- | ----- |
-| [ ] | Impedir remoção de nível com desenvolvedores associados                | 🚀    |
-| [ ] | Adicionar busca via query para a listagem de n íveis                   | 🚀🎨  |
+| [x] | Impedir remoção de nível com desenvolvedores associados                | 🚀    |
+| [ ] | Adicionar busca via query para a listagem de níveis                   | 🚀🎨  |
 | [ ] | Adicionar busca via query para a listagem de desenvolvedores           | 🚀🎨  |
-| [ ] | Tratamento de Exceções / Retornos erros concisos                       | 🚀🎨  |
-| [ ] | Paginação na listagem de níveis                                        | 🚀🎨  |
-| [ ] | Paginação na listagem de desenvolvedores                               | 🚀🎨  |
-| [ ] | Mensagens de sucesso e/ou erros (Ex. Toast Notification)               | 🎨    |
-| [ ] | Confirmação para exclusão de itens                                     | 🎨    |
+| [x] | Tratamento de Exceções / Retornos erros concisos                       | 🚀🎨  |
+| [x] | Paginação na listagem de níveis                                        | 🚀🎨  |
+| [x] | Paginação na listagem de desenvolvedores                               | 🚀🎨  |
+| [x] | Mensagens de sucesso e/ou erros (Ex. Toast Notification)               | 🎨    |
+| [x] | Confirmação para exclusão de itens                                     | 🎨    |
 | [ ] | Ordenação das tabelas clicando no nome da coluna                       | 🎨    |
-| [ ] | Validações de campos                                                   | 🚀🎨  |
-| [ ] | Na página de níveis adicionar uma coluna com a qtde de devs associados | 🎨    |
+| [x] | Validações de campos                                                   | 🚀🎨  |
+| [x] | Na página de níveis adicionar uma coluna com a qtde de devs associados | 🎨    |
 
 ### Nível 3
 
@@ -300,7 +300,10 @@ Está separado por níveis, onde o nível 1 é o mínimo que esperamos que você
 
 |     | Descrição                                                               | Local |
 | --- | ----------------------------------------------------------------------- | ----- |
-| [ ] | Disponibilização do backend via Docker                                  | 🚀    |
-| [ ] | Disponibilização do frontend via Docker                                 | 🎨    |
-| [ ] | Disponibilização dos containers (backend + frontend) via Docker Compose | 🚀🎨  |
+| [x] | Disponibilização do backend via Docker                                  | 🚀    |
+| [x] | Disponibilização do frontend via Docker                                 | 🎨    |
+| [x] | Disponibilização dos containers (backend + frontend) via Docker Compose | 🚀🎨  |
 | [ ] | Publicação do projeto online                                            | 🚀🎨  |
+
+### Notas
+

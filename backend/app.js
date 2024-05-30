@@ -30,7 +30,12 @@ app.get('/api/niveis', async (req, res) => {
     try {
         const page = req.query.page ?? 1;
         const [ results ] = await connection.promise().query(
-            'SELECT * FROM `nivel` limit 5 offset ?', [(page - 1) * 5]
+            'SELECT tnivel.*, count(tdev.id) as devs FROM ' 
+            + '(select * from `nivel` order by id) tnivel '
+            + 'left join '
+            + '(select id, nivel_id from `dev`) tdev '
+            + 'on (tnivel.id = tdev.nivel_id) '
+            + 'group by tnivel.id limit 5 offset ?', [(page - 1) * 5]
         );
         if (!results.length) {
             res.status(404).json({ message: 'Nenhum nível encontrado' });
@@ -45,6 +50,22 @@ app.get('/api/niveis', async (req, res) => {
         returnData.last_page = Math.ceil(returnData.total / returnData.per_page);
         returnData.data = results;
         res.status(200).json(returnData); // results contains rows returned by server
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.get('/api/niveis/all', async (req, res) => {
+    try {
+        const [ results ] = await connection.promise().query(
+            'SELECT * FROM `nivel` order by nivel'
+        );
+        if (!results.length) {
+            res.status(404).json({ message: 'Nenhum nível encontrado' });
+            return;
+        }
+        
+        res.status(200).json(results); // results contains rows returned by server
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -172,14 +193,29 @@ app.delete('/api/niveis/:id', async (req, res) => {
 });
 
 app.get('/api/desenvolvedores', async (req, res) => {
+    const returnData = {
+        data : [],
+        total: 0,
+        per_page: 5,
+        current_page: 1,
+        last_page: 1,
+    };
+    const page = req.query.page ?? 1;
     try {
         const [ results ] = await connection.promise().query(
-            'SELECT * FROM `dev`, `nivel` WHERE dev.nivel_id = nivel.id'
+            'SELECT dev.*, nivel.nivel FROM `dev`, `nivel` WHERE dev.nivel_id = nivel.id limit 5 offset ?', [(page - 1) * 5]
         );
         if (!results.length) {
             res.status(404).json({ message: 'Nenhum desenvolvedor encontrado' });
             return;
         }
+        const [ countDevs ] = await connection.promise().query(
+            'SELECT count(*) as total FROM `dev`'
+        );
+        returnData.total = countDevs[0]['total'];
+        returnData.per_page = 5;
+        returnData.current_page = Number(page);
+        returnData.last_page = Math.ceil(returnData.total / returnData.per_page);
         
         results.forEach(async (dev) => {
             dev.hobby = dev.hobby ?? '';
@@ -192,7 +228,10 @@ app.get('/api/desenvolvedores', async (req, res) => {
             dev.idade = dev.data_nascimento ? calcAge(dev.data_nascimento) : '';
             delete dev.nivel_id;
         });
-        res.status(200).json(results); // results contains rows returned by server
+
+        returnData.data = results;
+
+        res.status(200).json(returnData); 
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -210,11 +249,26 @@ app.post('/api/desenvolvedores', async (req, res) => {
         res.status(400).json({ message: 'Nome e nível são obrigatórios' });
         return;
     }
+    if (sexo && sexo !== 'M' && sexo !== 'F') {
+        res.status(400).json({ message: 'Sexo inválido' });
+        return;
+    }
+
+    if (data_nascimento && !data_nascimento.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        res.status(400).json({ message: 'Data de nascimento inválida' });
+        return;
+    }
     
     try {
+        let dataNascStr = null;
+        if (data_nascimento) {
+            let dataNasc = new Date(data_nascimento);
+            dataNascStr = dataNasc.toISOString().split('T')[0];
+        }
+
         let [ results ] = await connection.promise().execute(
             'INSERT INTO `dev` (nome, sexo, data_nascimento, hobby, nivel_id, idade) VALUES (?, ?, ?, ?, ?, ?)',
-            [nome, sexo, data_nascimento, hobby, nivel_id, calcAge(data_nascimento)]
+            [nome, sexo, dataNascStr, hobby, nivel_id, calcAge(data_nascimento)]
         );
         
         [ results ] = await connection.promise().query(

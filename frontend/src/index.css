@@ -25,7 +25,8 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
+  align-items: flex-start;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -52,6 +53,22 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+nav ul li {
+  display: inline;
+  margin-right: 1em;
+  list-style: none;
+  text-transform: uppercase;
+}
+
+nav a {
+  text-decoration: none;
+  color: darkslategray;
+}
+
+nav a:hover {
+  color: red;
 }
 
 @media (prefers-color-scheme: light) {
