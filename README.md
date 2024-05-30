@@ -307,3 +307,28 @@ Está separado por níveis, onde o nível 1 é o mínimo que esperamos que você
 
 ### Notas
 
+O sistema está funcionando na maneira básica.
+
+Com um pouco mais de tempo daria pra completar, mas estou no meio de uma mudança e entregando um livro de Back-end na universidade, daí foi possível pegar apenas dois fins de dia e a quinta de feriado para fazer.
+
+O sistema foi feito em Node.js + React + MySQL. O docker está configurado, mas falhou para subir o nginx, não tive muito tempo de depurar isso. Ele pode ser acionado com:
+
+```
+npm run dev
+```
+
+Tanto na pasta backend quanto na pasta frontend, para desenvolvimento e
+
+```
+npm start
+```
+
+Para iniciar o servidor back-end e
+
+```
+npm run build
+```
+
+Para buildar o front-end.
+
+A criação do banco de dados MySQL pode ser feita através do script `db-create.sql` que está na raiz.
